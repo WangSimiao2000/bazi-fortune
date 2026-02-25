@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>称骨算命</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            display: none;
+        }
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .weight {
+            font-size: 24px;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .poem {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📿 称骨算命</h1>
+        <form id="baziForm">
+            <div class="form-group">
+                <label>性别</label>
+                <select id="gender" required>
+                    <option value="male">男</option>
+                    <option value="female">女</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>出生年份</label>
+                <input type="number" id="year" min="1924" max="2020" value="1990" required>
+            </div>
+            <div class="form-group">
+                <label>出生月份</label>
+                <select id="month" required>
+                    <option value="1">正月</option>
+                    <option value="2">二月</option>
+                    <option value="3">三月</option>
+                    <option value="4">四月</option>
+                    <option value="5">五月</option>
+                    <option value="6">六月</option>
+                    <option value="7">七月</option>
+                    <option value="8">八月</option>
+                    <option value="9">九月</option>
+                    <option value="10">十月</option>
+                    <option value="11">冬月</option>
+                    <option value="12">腊月</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>出生日期</label>
+                <input type="number" id="day" min="1" max="30" value="1" required>
+            </div>
+            <div class="form-group">
+                <label>出生时辰</label>
+                <select id="hour" required>
+                    <option value="0">子时 (23:00-00:59)</option>
+                    <option value="1">丑时 (01:00-02:59)</option>
+                    <option value="2">丑时 (01:00-02:59)</option>
+                    <option value="3">寅时 (03:00-04:59)</option>
+                    <option value="4">寅时 (03:00-04:59)</option>
+                    <option value="5">卯时 (05:00-06:59)</option>
+                    <option value="6">卯时 (05:00-06:59)</option>
+                    <option value="7">辰时 (07:00-08:59)</option>
+                    <option value="8">辰时 (07:00-08:59)</option>
+                    <option value="9">巳时 (09:00-10:59)</option>
+                    <option value="10">巳时 (09:00-10:59)</option>
+                    <option value="11">午时 (11:00-12:59)</option>
+                    <option value="12">午时 (11:00-12:59)</option>
+                    <option value="13">未时 (13:00-14:59)</option>
+                    <option value="14">未时 (13:00-14:59)</option>
+                    <option value="15">申时 (15:00-16:59)</option>
+                    <option value="16">申时 (15:00-16:59)</option>
+                    <option value="17">酉时 (17:00-18:59)</option>
+                    <option value="18">酉时 (17:00-18:59)</option>
+                    <option value="19">戌时 (19:00-20:59)</option>
+                    <option value="20">戌时 (19:00-20:59)</option>
+                    <option value="21">亥时 (21:00-22:59)</option>
+                    <option value="22">亥时 (21:00-22:59)</option>
+                    <option value="23">子时 (23:00-00:59)</option>
+                </select>
+            </div>
+            <button type="submit">🔮 开始算命</button>
+        </form>
+        <div id="result" class="result">
+            <div class="weight" id="weightDisplay"></div>
+            <div class="poem" id="poemDisplay"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('baziForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const gender = document.getElementById('gender').value;
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const day = document.getElementById('day').value;
+            const hour = document.getElementById('hour').value;
+            
+            try {
+                const response = await fetch(`http://localhost:8080/calculate?year=${year}&month=${month}&day=${day}&hour=${hour}&gender=${gender}`);
+                const data = await response.json();
+                
+                document.getElementById('weightDisplay').textContent = `骨重：${data.weight} 两`;
+                document.getElementById('poemDisplay').textContent = data.poem;
+                document.getElementById('result').classList.add('show');
+            } catch (error) {
+                alert('计算失败，请确保后端服务已启动');
+            }
+        });
+    </script>
+</body>
+</html>
