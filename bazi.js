@@ -22,8 +22,8 @@ function getLunarYearDays(year) {
     return sum + getLeapDays(year);
 }
 
-// 阳历转农历日
-function solarToLunarDay(year, month, day) {
+// 阳历转农历（返回年和日）
+function solarToLunar(year, month, day) {
     const baseYear = 1900;
     const baseDay = 31;
     
@@ -79,7 +79,7 @@ function solarToLunarDay(year, month, day) {
         }
     }
     
-    return lunarDay;
+    return { year: lunarYear, day: lunarDay };
 }
 
 // 节气计算（精确版）
@@ -133,37 +133,39 @@ document.getElementById('baziForm').addEventListener('submit', (e) => {
     
     if (mode === 'solar') {
         // 阳历模式
-        year = parseInt(document.getElementById('year').value);
+        let inputYear = parseInt(document.getElementById('year').value);
         let month = parseInt(document.getElementById('month').value);
         let day = parseInt(document.getElementById('day').value);
         hour = parseInt(document.getElementById('hour').value);
         
-        const inputYear = year, inputMonth = month, inputDay = day, inputHour = hour;
+        const inputMonth = month, inputDay = day, inputHour = hour;
         
         // 处理23点
         if (hour === 23) {
             hour = 0;
             day++;
             const monthDays = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            if ((year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)) monthDays[2] = 29;
+            if ((inputYear % 4 === 0 && inputYear % 100 !== 0) || (inputYear % 400 === 0)) monthDays[2] = 29;
             if (day > monthDays[month]) {
                 day = 1;
                 month++;
                 if (month > 12) {
                     month = 1;
-                    year++;
+                    inputYear++;
                 }
             }
         }
         
-        solarMonth = getSolarMonth(year, month, day, hour);
-        lunarDay = solarToLunarDay(year, month, day);
+        solarMonth = getSolarMonth(inputYear, month, day, hour);
+        const lunar = solarToLunar(inputYear, month, day);
+        year = lunar.year;
+        lunarDay = lunar.day;
         
         const monthNames = ['', '正月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '冬月', '腊月'];
         const hourNames = ['子时', '丑时', '丑时', '寅时', '寅时', '卯时', '卯时', '辰时', '辰时', '巳时', '巳时', '午时', '午时', '未时', '未时', '申时', '申时', '酉时', '酉时', '戌时', '戌时', '亥时', '亥时', '子时'];
         
         const is23Hour = inputHour === 23;
-        const displayDate = is23Hour ? `${year}年${month}月${day}日` : `${inputYear}年${inputMonth}月${inputDay}日`;
+        const displayDate = is23Hour ? `${inputYear}年${month}月${day}日` : `${inputYear}年${inputMonth}月${inputDay}日`;
         
         processHTML = `
             <div class="process-item">
@@ -179,7 +181,7 @@ document.getElementById('baziForm').addEventListener('submit', (e) => {
         
         processHTML += `
             <div class="process-item">
-                <strong>阳历转农历：</strong>${displayDate} → 农历 <strong>${lunarDay}日</strong>
+                <strong>阳历转农历：</strong>${displayDate} → 农历 <strong>${year}年${lunarDay}日</strong>
             </div>
             <div class="process-item">
                 <strong>节气转换：</strong>${displayDate} ${hourNames[hour]} → 节气月 <strong>${monthNames[solarMonth]}</strong>
