@@ -130,9 +130,11 @@
     <div class="container">
         <h1>📿 称骨算命</h1>
         <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; line-height: 1.6;">
-            <strong>✅ 精确计算：</strong><br>
-            输入阳历生日和时辰，系统将精确计算节气时刻。<br>
-            <small style="color: #666;">💡 节气精确到小时，如立冬在11月7日10:30，则7日凌晨仍算九月</small>
+            <strong>✅ 全自动计算：</strong><br>
+            只需输入阳历生日和时辰，系统自动完成：<br>
+            • 阳历 → 农历日期转换<br>
+            • 精确节气时刻计算（精确到小时）<br>
+            • 称骨重量计算
         </div>
         <form id="baziForm">
             <div class="form-group">
@@ -231,7 +233,10 @@
                         <strong>输入：</strong>阳历 ${data.inputYear}年${data.inputMonth}月${data.inputDay}日 ${hourNames[data.inputHour]}
                     </div>
                     <div class="process-item">
-                        <strong>节气转换：</strong>${data.inputYear}年${data.inputMonth}月${data.inputDay}日 → 节气月 <strong>${monthNames[data.solarMonth]}</strong>
+                        <strong>阳历转农历：</strong>${data.inputYear}年${data.inputMonth}月${data.inputDay}日 → 农历 <strong>${data.lunarDay}日</strong>
+                    </div>
+                    <div class="process-item">
+                        <strong>节气转换：</strong>${data.inputYear}年${data.inputMonth}月 ${hourNames[data.inputHour]} → 节气月 <strong>${monthNames[data.solarMonth]}</strong>
                     </div>
                     <div class="process-item">
                         <strong>年份骨重：</strong>${data.inputYear}年 = ${data.yearWeight} 两
@@ -240,7 +245,7 @@
                         <strong>月份骨重：</strong>${monthNames[data.solarMonth]} = ${data.monthWeight} 两
                     </div>
                     <div class="process-item">
-                        <strong>日期骨重：</strong>${data.inputDay}日 = ${data.dayWeight} 两
+                        <strong>日期骨重：</strong>农历${data.lunarDay}日 = ${data.dayWeight} 两
                     </div>
                     <div class="process-item">
                         <strong>时辰骨重：</strong>${hourNames[data.inputHour]} = ${data.hourWeight} 两

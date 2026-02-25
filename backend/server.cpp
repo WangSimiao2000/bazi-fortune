@@ -5,6 +5,7 @@
 #include <cstring>
 #include <regex>
 #include "solar_terms_calc.h"
+#include "lunar_calendar.h"
 
 #ifdef _WIN32
     #include <winsock2.h>
@@ -162,7 +163,7 @@ string getPoem(double weight, const string& gender) {
 }
 
 string handleRequest(const string& request) {
-    // 新API：接收阳历日期和时辰，精确计算节气月
+    // 新API：接收阳历日期和时辰，自动转换农历日
     regex pattern("GET /calculate\\?year=(\\d+)&month=(\\d+)&day=(\\d+)&hour=(\\d+)&gender=(male|female)");
     smatch matches;
     
@@ -176,10 +177,13 @@ string handleRequest(const string& request) {
         // 自动计算节气月（精确到小时）
         int solarMonth = getSolarMonth(year, month, day, hour);
         
-        // 获取各部分骨重
+        // 阳历转农历日
+        int lunarDay = solarToLunarDay(year, month, day);
+        
+        // 获取各部分骨重（日期使用农历日）
         double yearW = yearWeight[0].count(year) ? yearWeight[0][year] : 0;
         double monthW = monthWeight.count(solarMonth) ? monthWeight[solarMonth] : 0;
-        double dayW = dayWeight.count(day) ? dayWeight[day] : 0;
+        double dayW = dayWeight.count(lunarDay) ? dayWeight[lunarDay] : 0;
         double hourW = hourWeight.count(hour) ? hourWeight[hour] : 0;
         
         double weight = yearW + monthW + dayW + hourW;
@@ -189,6 +193,7 @@ string handleRequest(const string& request) {
         json << "{\"weight\":" << weight 
              << ",\"poem\":\"" << poem << "\""
              << ",\"solarMonth\":" << solarMonth
+             << ",\"lunarDay\":" << lunarDay
              << ",\"yearWeight\":" << yearW
              << ",\"monthWeight\":" << monthW
              << ",\"dayWeight\":" << dayW
