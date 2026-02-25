@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>称骨算命</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        .info {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            display: none;
+        }
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .process {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .process-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .process-item {
+            padding: 5px 0;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+        .process-item:last-child {
+            border-bottom: none;
+        }
+        .process-sum {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid #667eea;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .weight {
+            font-size: 24px;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .poem {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+        }
+        small {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📿 称骨算命</h1>
+        <div class="info">
+            <strong>✅ 纯前端计算：</strong><br>
+            无需后端服务器，所有计算在浏览器中完成<br>
+            • 阳历 → 农历日期转换<br>
+            • 精确节气时刻计算<br>
+            • 称骨重量计算
+        </div>
+        <form id="baziForm">
+            <div class="form-group">
+                <label>性别</label>
+                <select id="gender" required>
+                    <option value="male">男</option>
+                    <option value="female">女</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>出生年份（阳历）</label>
+                <input type="number" id="year" min="1900" max="2100" value="2000" required>
+            </div>
+            <div class="form-group">
+                <label>出生月份（阳历）</label>
+                <select id="month" required>
+                    <option value="1">1月</option>
+                    <option value="2">2月</option>
+                    <option value="3">3月</option>
+                    <option value="4">4月</option>
+                    <option value="5">5月</option>
+                    <option value="6">6月</option>
+                    <option value="7">7月</option>
+                    <option value="8">8月</option>
+                    <option value="9">9月</option>
+                    <option value="10">10月</option>
+                    <option value="11">11月</option>
+                    <option value="12">12月</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>出生日期（阳历）</label>
+                <input type="number" id="day" min="1" max="31" value="1" required>
+            </div>
+            <div class="form-group">
+                <label>出生时间</label>
+                <select id="hour" required>
+                    <option value="0">00:00-00:59 (子时)</option>
+                    <option value="1">01:00-01:59 (丑时)</option>
+                    <option value="2">02:00-02:59 (丑时)</option>
+                    <option value="3">03:00-03:59 (寅时)</option>
+                    <option value="4">04:00-04:59 (寅时)</option>
+                    <option value="5">05:00-05:59 (卯时)</option>
+                    <option value="6">06:00-06:59 (卯时)</option>
+                    <option value="7">07:00-07:59 (辰时)</option>
+                    <option value="8">08:00-08:59 (辰时)</option>
+                    <option value="9">09:00-09:59 (巳时)</option>
+                    <option value="10">10:00-10:59 (巳时)</option>
+                    <option value="11">11:00-11:59 (午时)</option>
+                    <option value="12">12:00-12:59 (午时)</option>
+                    <option value="13">13:00-13:59 (未时)</option>
+                    <option value="14">14:00-14:59 (未时)</option>
+                    <option value="15">15:00-15:59 (申时)</option>
+                    <option value="16">16:00-16:59 (申时)</option>
+                    <option value="17">17:00-17:59 (酉时)</option>
+                    <option value="18">18:00-18:59 (酉时)</option>
+                    <option value="19">19:00-19:59 (戌时)</option>
+                    <option value="20">20:00-20:59 (戌时)</option>
+                    <option value="21">21:00-21:59 (亥时)</option>
+                    <option value="22">22:00-22:59 (亥时)</option>
+                    <option value="23">23:00-23:59 (子时-次日)</option>
+                </select>
+                <small>⚠️ 注意：23:00-23:59算作次日子时</small>
+            </div>
+            <button type="submit">🔮 开始算命</button>
+        </form>
+        <div id="result" class="result">
+            <div class="process">
+                <div class="process-title">📊 计算过程</div>
+                <div id="processDisplay"></div>
+            </div>
+            <div class="weight" id="weightDisplay"></div>
+            <div class="poem" id="poemDisplay"></div>
+        </div>
+    </div>
+
+    <script src="bazi.js"></script>
+</body>
+</html>
