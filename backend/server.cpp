@@ -162,7 +162,7 @@ string getPoem(double weight, const string& gender) {
 }
 
 string handleRequest(const string& request) {
-    // 新API：接收阳历日期，自动计算节气月
+    // 新API：接收阳历日期和时辰，精确计算节气月
     regex pattern("GET /calculate\\?year=(\\d+)&month=(\\d+)&day=(\\d+)&hour=(\\d+)&gender=(male|female)");
     smatch matches;
     
@@ -173,8 +173,8 @@ string handleRequest(const string& request) {
         int hour = stoi(matches[4]);
         string gender = matches[5];
         
-        // 自动计算节气月
-        int solarMonth = getSolarMonth(year, month, day);
+        // 自动计算节气月（精确到小时）
+        int solarMonth = getSolarMonth(year, month, day, hour);
         
         // 获取各部分骨重
         double yearW = yearWeight[0].count(year) ? yearWeight[0][year] : 0;
