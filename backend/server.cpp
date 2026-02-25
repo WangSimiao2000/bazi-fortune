@@ -174,17 +174,44 @@ string handleRequest(const string& request) {
         int hour = stoi(matches[4]);
         string gender = matches[5];
         
+        // 处理23点的特殊情况：23点算次日子时
+        int calcYear = year;
+        int calcMonth = month;
+        int calcDay = day;
+        int calcHour = hour;
+        
+        if (hour == 23) {
+            // 23点算次日，需要日期+1
+            calcHour = 0; // 子时
+            calcDay++;
+            
+            // 处理月末
+            int monthDays[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+            if ((calcYear % 4 == 0 && calcYear % 100 != 0) || (calcYear % 400 == 0)) {
+                monthDays[2] = 29;
+            }
+            
+            if (calcDay > monthDays[calcMonth]) {
+                calcDay = 1;
+                calcMonth++;
+                if (calcMonth > 12) {
+                    calcMonth = 1;
+                    calcYear++;
+                }
+            }
+        }
+        
         // 自动计算节气月（精确到小时）
-        int solarMonth = getSolarMonth(year, month, day, hour);
+        int solarMonth = getSolarMonth(calcYear, calcMonth, calcDay, calcHour);
         
         // 阳历转农历日
-        int lunarDay = solarToLunarDay(year, month, day);
+        int lunarDay = solarToLunarDay(calcYear, calcMonth, calcDay);
         
         // 获取各部分骨重（日期使用农历日）
-        double yearW = yearWeight[0].count(year) ? yearWeight[0][year] : 0;
+        double yearW = yearWeight[0].count(calcYear) ? yearWeight[0][calcYear] : 0;
         double monthW = monthWeight.count(solarMonth) ? monthWeight[solarMonth] : 0;
         double dayW = dayWeight.count(lunarDay) ? dayWeight[lunarDay] : 0;
-        double hourW = hourWeight.count(hour) ? hourWeight[hour] : 0;
+        double hourW = hourWeight.count(calcHour) ? hourWeight[calcHour] : 0;
         
         double weight = yearW + monthW + dayW + hourW;
         string poem = getPoem(weight, gender);
@@ -201,7 +228,10 @@ string handleRequest(const string& request) {
              << ",\"inputYear\":" << year
              << ",\"inputMonth\":" << month
              << ",\"inputDay\":" << day
-             << ",\"inputHour\":" << hour << "}";
+             << ",\"inputHour\":" << hour
+             << ",\"calcYear\":" << calcYear
+             << ",\"calcMonth\":" << calcMonth
+             << ",\"calcDay\":" << calcDay << "}";
         
         ostringstream response;
         response << "HTTP/1.1 200 OK\r\n"

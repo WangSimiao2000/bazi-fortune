@@ -170,33 +170,38 @@
                 <input type="number" id="day" min="1" max="31" value="1" required>
             </div>
             <div class="form-group">
-                <label>出生时辰</label>
-                <select id="hour" required>
-                    <option value="0">子时 (23:00-00:59)</option>
-                    <option value="1">丑时 (01:00-02:59)</option>
-                    <option value="2">丑时 (01:00-02:59)</option>
-                    <option value="3">寅时 (03:00-04:59)</option>
-                    <option value="4">寅时 (03:00-04:59)</option>
-                    <option value="5">卯时 (05:00-06:59)</option>
-                    <option value="6">卯时 (05:00-06:59)</option>
-                    <option value="7">辰时 (07:00-08:59)</option>
-                    <option value="8">辰时 (07:00-08:59)</option>
-                    <option value="9">巳时 (09:00-10:59)</option>
-                    <option value="10">巳时 (09:00-10:59)</option>
-                    <option value="11">午时 (11:00-12:59)</option>
-                    <option value="12">午时 (11:00-12:59)</option>
-                    <option value="13">未时 (13:00-14:59)</option>
-                    <option value="14">未时 (13:00-14:59)</option>
-                    <option value="15">申时 (15:00-16:59)</option>
-                    <option value="16">申时 (15:00-16:59)</option>
-                    <option value="17">酉时 (17:00-18:59)</option>
-                    <option value="18">酉时 (17:00-18:59)</option>
-                    <option value="19">戌时 (19:00-20:59)</option>
-                    <option value="20">戌时 (19:00-20:59)</option>
-                    <option value="21">亥时 (21:00-22:59)</option>
-                    <option value="22">亥时 (21:00-22:59)</option>
-                    <option value="23">子时 (23:00-00:59)</option>
-                </select>
+                <label>出生时间</label>
+                <div style="display: flex; gap: 10px;">
+                    <select id="hour" required style="flex: 1;">
+                        <option value="0">00:00-00:59 (子时)</option>
+                        <option value="1">01:00-01:59 (丑时)</option>
+                        <option value="2">02:00-02:59 (丑时)</option>
+                        <option value="3">03:00-03:59 (寅时)</option>
+                        <option value="4">04:00-04:59 (寅时)</option>
+                        <option value="5">05:00-05:59 (卯时)</option>
+                        <option value="6">06:00-06:59 (卯时)</option>
+                        <option value="7">07:00-07:59 (辰时)</option>
+                        <option value="8">08:00-08:59 (辰时)</option>
+                        <option value="9">09:00-09:59 (巳时)</option>
+                        <option value="10">10:00-10:59 (巳时)</option>
+                        <option value="11">11:00-11:59 (午时)</option>
+                        <option value="12">12:00-12:59 (午时)</option>
+                        <option value="13">13:00-13:59 (未时)</option>
+                        <option value="14">14:00-14:59 (未时)</option>
+                        <option value="15">15:00-15:59 (申时)</option>
+                        <option value="16">16:00-16:59 (申时)</option>
+                        <option value="17">17:00-17:59 (酉时)</option>
+                        <option value="18">18:00-18:59 (酉时)</option>
+                        <option value="19">19:00-19:59 (戌时)</option>
+                        <option value="20">20:00-20:59 (戌时)</option>
+                        <option value="21">21:00-21:59 (亥时)</option>
+                        <option value="22">22:00-22:59 (亥时)</option>
+                        <option value="23">23:00-23:59 (子时-次日)</option>
+                    </select>
+                </div>
+                <small style="color: #999; font-size: 12px; margin-top: 5px; display: block;">
+                    ⚠️ 注意：23:00-23:59算作次日子时
+                </small>
             </div>
             <button type="submit">🔮 开始算命</button>
         </form>
@@ -224,22 +229,30 @@
                 const response = await fetch(`http://localhost:8080/calculate?year=${year}&month=${month}&day=${day}&hour=${hour}&gender=${gender}`);
                 const data = await response.json();
                 
-                const monthNames = ['', '正月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '冬月', '腊月'];
                 const hourNames = ['子时', '丑时', '丑时', '寅时', '寅时', '卯时', '卯时', '辰时', '辰时', '巳时', '巳时', '午时', '午时', '未时', '未时', '申时', '申时', '酉时', '酉时', '戌时', '戌时', '亥时', '亥时', '子时'];
+                
+                // 判断是否23点（次日子时）
+                const is23Hour = data.inputHour == 23;
+                const displayDate = is23Hour 
+                    ? `${data.calcYear}年${data.calcMonth}月${data.calcDay}日` 
+                    : `${data.inputYear}年${data.inputMonth}月${data.inputDay}日`;
                 
                 // 显示计算过程
                 const processHTML = `
                     <div class="process-item">
-                        <strong>输入：</strong>阳历 ${data.inputYear}年${data.inputMonth}月${data.inputDay}日 ${hourNames[data.inputHour]}
+                        <strong>输入：</strong>阳历 ${data.inputYear}年${data.inputMonth}月${data.inputDay}日 ${data.inputHour}:00-${data.inputHour}:59
+                    </div>
+                    ${is23Hour ? `<div class="process-item" style="color: #667eea;">
+                        <strong>时辰调整：</strong>23点算次日子时 → ${displayDate} 子时
+                    </div>` : ''}
+                    <div class="process-item">
+                        <strong>阳历转农历：</strong>${displayDate} → 农历 <strong>${data.lunarDay}日</strong>
                     </div>
                     <div class="process-item">
-                        <strong>阳历转农历：</strong>${data.inputYear}年${data.inputMonth}月${data.inputDay}日 → 农历 <strong>${data.lunarDay}日</strong>
+                        <strong>节气转换：</strong>${displayDate} ${hourNames[data.inputHour == 23 ? 0 : data.inputHour]} → 节气月 <strong>${monthNames[data.solarMonth]}</strong>
                     </div>
                     <div class="process-item">
-                        <strong>节气转换：</strong>${data.inputYear}年${data.inputMonth}月 ${hourNames[data.inputHour]} → 节气月 <strong>${monthNames[data.solarMonth]}</strong>
-                    </div>
-                    <div class="process-item">
-                        <strong>年份骨重：</strong>${data.inputYear}年 = ${data.yearWeight} 两
+                        <strong>年份骨重：</strong>${data.calcYear}年 = ${data.yearWeight} 两
                     </div>
                     <div class="process-item">
                         <strong>月份骨重：</strong>${monthNames[data.solarMonth]} = ${data.monthWeight} 两
@@ -248,7 +261,7 @@
                         <strong>日期骨重：</strong>农历${data.lunarDay}日 = ${data.dayWeight} 两
                     </div>
                     <div class="process-item">
-                        <strong>时辰骨重：</strong>${hourNames[data.inputHour]} = ${data.hourWeight} 两
+                        <strong>时辰骨重：</strong>${hourNames[data.inputHour == 23 ? 0 : data.inputHour]} = ${data.hourWeight} 两
                     </div>
                     <div class="process-sum">
                         总计：${data.yearWeight} + ${data.monthWeight} + ${data.dayWeight} + ${data.hourWeight} = ${data.weight} 两
