@@ -3,10 +3,20 @@
 #include <map>
 #include <sstream>
 #include <cstring>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <regex>
+
+#ifdef _WIN32
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #pragma comment(lib, "ws2_32.lib")
+    #define close closesocket
+    typedef int socklen_t;
+#else
+    #include <unistd.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <arpa/inet.h>
+#endif
 
 using namespace std;
 
@@ -186,30 +196,61 @@ string handleRequest(const string& request) {
 }
 
 int main() {
+#ifdef _WIN32
+    WSADATA wsaData;
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+        cerr << "WSAStartup 失败" << endl;
+        return 1;
+    }
+#endif
+
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd < 0) {
+        cerr << "创建 socket 失败" << endl;
+        return 1;
+    }
+    
     int opt = 1;
-    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
     
     sockaddr_in address;
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons(8080);
     
-    bind(server_fd, (sockaddr*)&address, sizeof(address));
+    if (bind(server_fd, (sockaddr*)&address, sizeof(address)) < 0) {
+        cerr << "绑定端口失败" << endl;
+        close(server_fd);
+        return 1;
+    }
+    
     listen(server_fd, 10);
     
     cout << "服务器运行在 http://localhost:8080" << endl;
     
     while (true) {
         int client_fd = accept(server_fd, nullptr, nullptr);
+        if (client_fd < 0) continue;
+        
         char buffer[4096] = {0};
+#ifdef _WIN32
+        recv(client_fd, buffer, sizeof(buffer), 0);
+#else
         read(client_fd, buffer, sizeof(buffer));
+#endif
         
         string response = handleRequest(string(buffer));
+#ifdef _WIN32
+        send(client_fd, response.c_str(), response.length(), 0);
+#else
         write(client_fd, response.c_str(), response.length());
+#endif
         close(client_fd);
     }
     
     close(server_fd);
+#ifdef _WIN32
+    WSACleanup();
+#endif
     return 0;
 }

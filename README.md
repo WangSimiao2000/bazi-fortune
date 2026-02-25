@@ -24,32 +24,36 @@ bazi-fortune/
 
 ## 快速开始
 
-### 方法一：使用脚本（推荐）
+### Windows 系统
 
+**方法一：直接编译运行**
+```cmd
+run.bat
+```
+
+**方法二：使用 CMake（推荐）**
+```cmd
+build.bat
+```
+
+### Linux/Mac 系统
+
+**方法一：直接编译运行**
 ```bash
-cd bazi-fortune
 ./run.sh
 ```
 
-### 方法二：手动运行
-
-1. 编译后端：
+**方法二：使用 CMake（推荐）**
 ```bash
-g++ -o backend/server backend/server.cpp -std=c++11
+./build.sh
 ```
 
-2. 启动后端服务：
-```bash
-./backend/server
-```
+### 前置要求
 
-3. 在浏览器中打开前端页面：
-```bash
-# 使用浏览器打开
-firefox frontend/index.html
-# 或
-google-chrome frontend/index.html
-```
+- **Windows**: MinGW-w64 或 MSVC（需包含 g++ 或 cl）
+- **Linux**: g++ 编译器
+- **Mac**: Xcode Command Line Tools
+- **可选**: CMake 3.10+（用于 CMake 构建方式）
 
 ## 使用说明
 
@@ -63,9 +67,10 @@ google-chrome frontend/index.html
 
 ## 技术栈
 
-- **后端**: C++ (socket 编程)
+- **后端**: C++ (跨平台 socket 编程)
 - **前端**: HTML5 + CSS3 + JavaScript
 - **通信**: HTTP REST API
+- **构建**: CMake (跨平台) / 直接编译
 
 ## API 接口
 
@@ -90,9 +95,11 @@ GET /calculate?year={year}&month={month}&day={day}&hour={hour}&gender={gender}
 
 - 后端服务运行在 `http://localhost:8080`
 - 确保端口 8080 未被占用
-- 需要 g++ 编译器支持 C++11 标准
+- Windows 需要 MinGW 或 MSVC 编译器
+- Linux/Mac 需要 g++ 编译器
 - 输入的日期为农历日期
 
 ## 停止服务
 
-按 `Ctrl+C` 停止后端服务器
+- **Windows**: 按任意键或 Ctrl+C
+- **Linux/Mac**: 按 Ctrl+C
