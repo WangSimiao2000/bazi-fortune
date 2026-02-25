@@ -13,9 +13,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
         }
         body::before {
             content: '';
@@ -35,7 +35,7 @@
             background: linear-gradient(135deg, rgba(26,26,46,0.95) 0%, rgba(22,33,62,0.95) 100%);
             border: 2px solid rgba(218,165,32,0.3);
             border-radius: 15px;
-            padding: 40px;
+            padding: clamp(20px, 5vw, 40px);
             box-shadow: 0 0 40px rgba(218,165,32,0.2), inset 0 0 60px rgba(0,0,0,0.3);
             max-width: 600px;
             width: 100%;
@@ -45,44 +45,45 @@
         .container::before {
             content: '☯';
             position: absolute;
-            top: -30px;
+            top: -20px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 60px;
+            font-size: clamp(40px, 10vw, 60px);
             opacity: 0.8;
             filter: drop-shadow(0 0 10px rgba(218,165,32,0.5));
         }
         h1 {
             text-align: center;
             color: #daa520;
-            margin-bottom: 10px;
-            font-size: 36px;
+            margin-bottom: 8px;
+            font-size: clamp(24px, 6vw, 36px);
             text-shadow: 0 0 20px rgba(218,165,32,0.5);
-            letter-spacing: 8px;
+            letter-spacing: clamp(4px, 1.5vw, 8px);
         }
         .subtitle {
             text-align: center;
             color: #b8860b;
-            font-size: 14px;
-            margin-bottom: 25px;
-            letter-spacing: 3px;
+            font-size: clamp(12px, 2.5vw, 14px);
+            margin-bottom: 20px;
+            letter-spacing: clamp(2px, 0.5vw, 3px);
         }
         .info {
             background: rgba(218,165,32,0.1);
             border: 1px solid rgba(218,165,32,0.3);
-            padding: 15px;
+            padding: clamp(12px, 3vw, 15px);
             border-radius: 8px;
-            margin-bottom: 25px;
-            font-size: 13px;
+            margin-bottom: 20px;
+            font-size: clamp(11px, 2.5vw, 13px);
             line-height: 1.8;
             color: #d4af37;
         }
         .mode-switch {
             display: flex;
-            gap: 20px;
+            flex-wrap: wrap;
+            gap: clamp(10px, 3vw, 20px);
             justify-content: center;
-            margin-bottom: 25px;
-            padding: 15px;
+            margin-bottom: 20px;
+            padding: clamp(10px, 3vw, 15px);
             background: rgba(218,165,32,0.05);
             border-radius: 8px;
         }
@@ -92,29 +93,29 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 14px;
+            font-size: clamp(12px, 2.5vw, 14px);
         }
         .mode-switch input[type="radio"] {
             width: auto;
             cursor: pointer;
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: clamp(15px, 3vw, 20px);
         }
         label {
             display: block;
             margin-bottom: 8px;
             color: #daa520;
             font-weight: bold;
-            font-size: 15px;
+            font-size: clamp(13px, 2.8vw, 15px);
         }
         input, select {
             width: 100%;
-            padding: 12px;
+            padding: clamp(10px, 2.5vw, 12px);
             background: rgba(0,0,0,0.3);
             border: 1px solid rgba(218,165,32,0.4);
             border-radius: 6px;
-            font-size: 15px;
+            font-size: clamp(13px, 3vw, 15px);
             color: #f0e68c;
             font-family: 'KaiTi', 'STKaiti', '楷体', serif;
             transition: all 0.3s;
@@ -127,17 +128,17 @@
         }
         button {
             width: 100%;
-            padding: 15px;
+            padding: clamp(12px, 3vw, 15px);
             background: linear-gradient(135deg, #b8860b 0%, #daa520 50%, #b8860b 100%);
             color: #1a1a2e;
             border: 2px solid #daa520;
             border-radius: 8px;
-            font-size: 18px;
+            font-size: clamp(15px, 3.5vw, 18px);
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'KaiTi', 'STKaiti', '楷体', serif;
-            letter-spacing: 4px;
+            letter-spacing: clamp(2px, 1vw, 4px);
             box-shadow: 0 5px 20px rgba(218,165,32,0.3);
         }
         button:hover {
@@ -146,8 +147,8 @@
             background: linear-gradient(135deg, #daa520 0%, #ffd700 50%, #daa520 100%);
         }
         .result {
-            margin-top: 30px;
-            padding: 25px;
+            margin-top: clamp(20px, 4vw, 30px);
+            padding: clamp(15px, 4vw, 25px);
             background: rgba(0,0,0,0.4);
             border: 2px solid rgba(218,165,32,0.4);
             border-radius: 10px;
@@ -165,10 +166,10 @@
         .process {
             background: rgba(218,165,32,0.05);
             border: 1px solid rgba(218,165,32,0.2);
-            padding: 18px;
+            padding: clamp(12px, 3vw, 18px);
             border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
+            margin-bottom: clamp(15px, 3vw, 20px);
+            font-size: clamp(12px, 2.5vw, 14px);
             line-height: 2;
             color: #d4af37;
         }
@@ -176,13 +177,14 @@
             font-weight: bold;
             color: #daa520;
             margin-bottom: 12px;
-            font-size: 17px;
+            font-size: clamp(14px, 3vw, 17px);
             text-align: center;
             letter-spacing: 2px;
         }
         .process-item {
-            padding: 8px 0;
+            padding: clamp(6px, 1.5vw, 8px) 0;
             border-bottom: 1px dashed rgba(218,165,32,0.2);
+            word-wrap: break-word;
         }
         .process-item:last-child {
             border-bottom: none;
@@ -193,34 +195,42 @@
             border-top: 2px solid #daa520;
             font-weight: bold;
             color: #ffd700;
-            font-size: 16px;
+            font-size: clamp(13px, 3vw, 16px);
             text-align: center;
         }
         .weight {
-            font-size: 32px;
+            font-size: clamp(24px, 6vw, 32px);
             color: #ffd700;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: clamp(15px, 3vw, 20px);
             text-align: center;
             text-shadow: 0 0 20px rgba(255,215,0,0.5);
-            letter-spacing: 4px;
+            letter-spacing: clamp(2px, 1vw, 4px);
         }
         .poem {
-            font-size: 17px;
+            font-size: clamp(14px, 3.2vw, 17px);
             line-height: 2.2;
             color: #f0e68c;
             text-align: justify;
             text-indent: 2em;
             background: rgba(218,165,32,0.05);
-            padding: 20px;
+            padding: clamp(15px, 3vw, 20px);
             border-radius: 8px;
             border-left: 4px solid #daa520;
+            word-wrap: break-word;
         }
         small {
             color: #b8860b;
-            font-size: 12px;
+            font-size: clamp(10px, 2vw, 12px);
             margin-top: 5px;
             display: block;
+        }
+        
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .container { border-radius: 10px; }
+            .container::before { top: -15px; }
+            .mode-switch { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
