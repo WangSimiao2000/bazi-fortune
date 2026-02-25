@@ -295,7 +295,11 @@ small {
 @media (max-width: 1023px) {
     .main-wrapper {
         flex-direction: column;
+    }
+    
+    .container {
         max-width: 600px;
+        width: 100%;
     }
     
     .result-container {
