@@ -4,6 +4,7 @@
 #include <sstream>
 #include <cstring>
 #include <regex>
+#include "solar_terms_calc.h"
 
 #ifdef _WIN32
     #include <winsock2.h>
@@ -161,6 +162,7 @@ string getPoem(double weight, const string& gender) {
 }
 
 string handleRequest(const string& request) {
+    // 新API：接收阳历日期，自动计算节气月
     regex pattern("GET /calculate\\?year=(\\d+)&month=(\\d+)&day=(\\d+)&hour=(\\d+)&gender=(male|female)");
     smatch matches;
     
@@ -171,11 +173,16 @@ string handleRequest(const string& request) {
         int hour = stoi(matches[4]);
         string gender = matches[5];
         
-        double weight = getWeight(year, month, day, hour);
+        // 自动计算节气月
+        int solarMonth = getSolarMonth(year, month, day);
+        
+        double weight = getWeight(year, solarMonth, day, hour);
         string poem = getPoem(weight, gender);
         
         ostringstream json;
-        json << "{\"weight\":" << weight << ",\"poem\":\"" << poem << "\"}";
+        json << "{\"weight\":" << weight 
+             << ",\"poem\":\"" << poem << "\""
+             << ",\"solarMonth\":" << solarMonth << "}";
         
         ostringstream response;
         response << "HTTP/1.1 200 OK\r\n"
