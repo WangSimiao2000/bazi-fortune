@@ -7,35 +7,75 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'KaiTi', 'STKaiti', '楷体', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                radial-gradient(circle, rgba(218,165,32,0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: drift 60s linear infinite;
+        }
+        @keyframes drift {
+            from { transform: translate(0, 0); }
+            to { transform: translate(50px, 50px); }
         }
         .container {
-            background: white;
-            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(26,26,46,0.95) 0%, rgba(22,33,62,0.95) 100%);
+            border: 2px solid rgba(218,165,32,0.3);
+            border-radius: 15px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 0 40px rgba(218,165,32,0.2), inset 0 0 60px rgba(0,0,0,0.3);
             max-width: 600px;
             width: 100%;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        .container::before {
+            content: '☯';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 60px;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(218,165,32,0.5));
         }
         h1 {
             text-align: center;
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 32px;
+            color: #daa520;
+            margin-bottom: 10px;
+            font-size: 36px;
+            text-shadow: 0 0 20px rgba(218,165,32,0.5);
+            letter-spacing: 8px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #b8860b;
+            font-size: 14px;
+            margin-bottom: 25px;
+            letter-spacing: 3px;
         }
         .info {
-            background: #e8f5e9;
+            background: rgba(218,165,32,0.1);
+            border: 1px solid rgba(218,165,32,0.3);
             padding: 15px;
             border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #d4af37;
         }
         .form-group {
             margin-bottom: 20px;
@@ -43,94 +83,120 @@
         label {
             display: block;
             margin-bottom: 8px;
-            color: #333;
+            color: #daa520;
             font-weight: bold;
+            font-size: 15px;
         }
         input, select {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(218,165,32,0.4);
+            border-radius: 6px;
+            font-size: 15px;
+            color: #f0e68c;
+            font-family: 'KaiTi', 'STKaiti', '楷体', serif;
+            transition: all 0.3s;
         }
         input:focus, select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #daa520;
+            box-shadow: 0 0 15px rgba(218,165,32,0.3);
+            background: rgba(0,0,0,0.5);
         }
         button {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
+            background: linear-gradient(135deg, #b8860b 0%, #daa520 50%, #b8860b 100%);
+            color: #1a1a2e;
+            border: 2px solid #daa520;
             border-radius: 8px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s;
+            font-family: 'KaiTi', 'STKaiti', '楷体', serif;
+            letter-spacing: 4px;
+            box-shadow: 0 5px 20px rgba(218,165,32,0.3);
         }
         button:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(218,165,32,0.5);
+            background: linear-gradient(135deg, #daa520 0%, #ffd700 50%, #daa520 100%);
         }
         .result {
             margin-top: 30px;
-            padding: 20px;
-            background: #f5f5f5;
+            padding: 25px;
+            background: rgba(0,0,0,0.4);
+            border: 2px solid rgba(218,165,32,0.4);
             border-radius: 10px;
             display: none;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
         }
         .result.show {
             display: block;
-            animation: fadeIn 0.5s;
+            animation: fadeIn 0.8s;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .process {
-            background: white;
-            padding: 15px;
+            background: rgba(218,165,32,0.05);
+            border: 1px solid rgba(218,165,32,0.2);
+            padding: 18px;
             border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-size: 14px;
-            line-height: 1.8;
+            line-height: 2;
+            color: #d4af37;
         }
         .process-title {
             font-weight: bold;
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 16px;
+            color: #daa520;
+            margin-bottom: 12px;
+            font-size: 17px;
+            text-align: center;
+            letter-spacing: 2px;
         }
         .process-item {
-            padding: 5px 0;
-            border-bottom: 1px dashed #e0e0e0;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(218,165,32,0.2);
         }
         .process-item:last-child {
             border-bottom: none;
         }
         .process-sum {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 2px solid #667eea;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 2px solid #daa520;
             font-weight: bold;
-            color: #667eea;
-        }
-        .weight {
-            font-size: 24px;
-            color: #667eea;
-            font-weight: bold;
-            margin-bottom: 15px;
+            color: #ffd700;
+            font-size: 16px;
             text-align: center;
         }
+        .weight {
+            font-size: 32px;
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255,215,0,0.5);
+            letter-spacing: 4px;
+        }
         .poem {
-            font-size: 16px;
-            line-height: 1.8;
-            color: #333;
+            font-size: 17px;
+            line-height: 2.2;
+            color: #f0e68c;
             text-align: justify;
+            text-indent: 2em;
+            background: rgba(218,165,32,0.05);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #daa520;
         }
         small {
-            color: #999;
+            color: #b8860b;
             font-size: 12px;
             margin-top: 5px;
             display: block;
@@ -139,13 +205,13 @@
 </head>
 <body>
     <div class="container">
-        <h1>📿 称骨算命</h1>
+        <h1>称骨算命</h1>
+        <div class="subtitle">— 袁天罡称骨术 —</div>
         <div class="info">
-            <strong>✅ 纯前端计算：</strong><br>
-            无需后端服务器，所有计算在浏览器中完成<br>
-            • 阳历 → 农历日期转换<br>
+            <strong>✦ 算法说明</strong><br>
+            • 阳历自动转换农历日期<br>
             • 精确节气时刻计算<br>
-            • 称骨重量计算
+            • 依据袁天罡称骨术推算命理
         </div>
         <form id="baziForm">
             <div class="form-group">
@@ -210,11 +276,11 @@
                 </select>
                 <small>⚠️ 注意：23:00-23:59算作次日子时</small>
             </div>
-            <button type="submit">🔮 开始算命</button>
+            <button type="submit">✦ 测算命理 ✦</button>
         </form>
         <div id="result" class="result">
             <div class="process">
-                <div class="process-title">📊 计算过程</div>
+                <div class="process-title">✦ 推算过程 ✦</div>
                 <div id="processDisplay"></div>
             </div>
             <div class="weight" id="weightDisplay"></div>
