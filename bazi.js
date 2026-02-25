@@ -84,21 +84,41 @@ function solarToLunarDay(year, month, day) {
 
 // 节气计算（精确版）
 function getSolarMonth(year, month, day, hour) {
-    // 简化但相对准确的节气判断
-    const solarTermDays = [6, 4, 6, 5, 6, 6, 7, 8, 8, 8, 7, 7];
+    // 节气大致日期和时刻（简化但相对准确）
+    // 格式：[日期, 大致小时]
+    const solarTerms = {
+        1: [6, 0],   // 小寒
+        2: [4, 6],   // 立春
+        3: [6, 0],   // 惊蛰
+        4: [5, 6],   // 清明
+        5: [6, 0],   // 立夏
+        6: [6, 6],   // 芒种
+        7: [7, 12],  // 小暑
+        8: [8, 6],   // 立秋
+        9: [8, 6],   // 白露
+        10: [8, 12], // 寒露
+        11: [7, 18], // 立冬
+        12: [7, 12]  // 大雪
+    };
     
-    if (month === 1) return day >= solarTermDays[0] ? 12 : 11;
-    if (month === 2) return day >= solarTermDays[1] ? 1 : 12;
-    if (month === 3) return day >= solarTermDays[2] ? 2 : 1;
-    if (month === 4) return day >= solarTermDays[3] ? 3 : 2;
-    if (month === 5) return day >= solarTermDays[4] ? 4 : 3;
-    if (month === 6) return day >= solarTermDays[5] ? 5 : 4;
-    if (month === 7) return day >= solarTermDays[6] ? 6 : 5;
-    if (month === 8) return day >= solarTermDays[7] ? 7 : 6;
-    if (month === 9) return day >= solarTermDays[8] ? 8 : 7;
-    if (month === 10) return day >= solarTermDays[9] ? 9 : 8;
-    if (month === 11) return day >= solarTermDays[10] ? 10 : 9;
-    return day >= solarTermDays[11] ? 11 : 10;
+    const [termDay, termHour] = solarTerms[month] || [7, 12];
+    
+    // 判断是否已过节气
+    const isPassed = (day > termDay) || (day === termDay && hour >= termHour);
+    
+    // 返回对应的节气月
+    if (month === 1) return isPassed ? 12 : 11;
+    if (month === 2) return isPassed ? 1 : 12;
+    if (month === 3) return isPassed ? 2 : 1;
+    if (month === 4) return isPassed ? 3 : 2;
+    if (month === 5) return isPassed ? 4 : 3;
+    if (month === 6) return isPassed ? 5 : 4;
+    if (month === 7) return isPassed ? 6 : 5;
+    if (month === 8) return isPassed ? 7 : 6;
+    if (month === 9) return isPassed ? 8 : 7;
+    if (month === 10) return isPassed ? 9 : 8;
+    if (month === 11) return isPassed ? 10 : 9;
+    return isPassed ? 11 : 10;
 }
 
 // 表单提交
