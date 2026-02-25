@@ -77,6 +77,27 @@
             line-height: 1.8;
             color: #d4af37;
         }
+        .mode-switch {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(218,165,32,0.05);
+            border-radius: 8px;
+        }
+        .mode-switch label {
+            color: #daa520;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .mode-switch input[type="radio"] {
+            width: auto;
+            cursor: pointer;
+        }
         .form-group {
             margin-bottom: 20px;
         }
@@ -213,6 +234,14 @@
             • 精确节气时刻计算<br>
             • 依据袁天罡称骨术推算命理
         </div>
+        <div class="mode-switch">
+            <label>
+                <input type="radio" name="inputMode" value="solar" checked> 阳历模式（自动转换）
+            </label>
+            <label>
+                <input type="radio" name="inputMode" value="manual"> 手动模式（节气月+农历日）
+            </label>
+        </div>
         <form id="baziForm">
             <div class="form-group">
                 <label>性别</label>
@@ -221,60 +250,141 @@
                     <option value="female">女</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label>出生年份（阳历）</label>
-                <input type="number" id="year" min="1900" max="2100" value="2000" required>
+            
+            <!-- 阳历模式 -->
+            <div id="solarMode">
+                <div class="form-group">
+                    <label>出生年份（阳历）</label>
+                    <input type="number" id="year" min="1900" max="2100" value="2000">
+                </div>
+                <div class="form-group">
+                    <label>出生月份（阳历）</label>
+                    <select id="month">
+                        <option value="1">1月</option>
+                        <option value="2">2月</option>
+                        <option value="3">3月</option>
+                        <option value="4">4月</option>
+                        <option value="5">5月</option>
+                        <option value="6">6月</option>
+                        <option value="7">7月</option>
+                        <option value="8">8月</option>
+                        <option value="9">9月</option>
+                        <option value="10">10月</option>
+                        <option value="11">11月</option>
+                        <option value="12">12月</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>出生日期（阳历）</label>
+                    <input type="number" id="day" min="1" max="31" value="1">
+                </div>
+                <div class="form-group">
+                    <label>出生时间</label>
+                    <select id="hour">
+                        <option value="0">00:00-00:59 (子时)</option>
+                        <option value="1">01:00-01:59 (丑时)</option>
+                        <option value="2">02:00-02:59 (丑时)</option>
+                        <option value="3">03:00-03:59 (寅时)</option>
+                        <option value="4">04:00-04:59 (寅时)</option>
+                        <option value="5">05:00-05:59 (卯时)</option>
+                        <option value="6">06:00-06:59 (卯时)</option>
+                        <option value="7">07:00-07:59 (辰时)</option>
+                        <option value="8">08:00-08:59 (辰时)</option>
+                        <option value="9">09:00-09:59 (巳时)</option>
+                        <option value="10">10:00-10:59 (巳时)</option>
+                        <option value="11">11:00-11:59 (午时)</option>
+                        <option value="12">12:00-12:59 (午时)</option>
+                        <option value="13">13:00-13:59 (未时)</option>
+                        <option value="14">14:00-14:59 (未时)</option>
+                        <option value="15">15:00-15:59 (申时)</option>
+                        <option value="16">16:00-16:59 (申时)</option>
+                        <option value="17">17:00-17:59 (酉时)</option>
+                        <option value="18">18:00-18:59 (酉时)</option>
+                        <option value="19">19:00-19:59 (戌时)</option>
+                        <option value="20">20:00-20:59 (戌时)</option>
+                        <option value="21">21:00-21:59 (亥时)</option>
+                        <option value="22">22:00-22:59 (亥时)</option>
+                        <option value="23">23:00-23:59 (子时-次日)</option>
+                    </select>
+                    <small>⚠️ 注意：23:00-23:59算作次日子时</small>
+                </div>
             </div>
-            <div class="form-group">
-                <label>出生月份（阳历）</label>
-                <select id="month" required>
-                    <option value="1">1月</option>
-                    <option value="2">2月</option>
-                    <option value="3">3月</option>
-                    <option value="4">4月</option>
-                    <option value="5">5月</option>
-                    <option value="6">6月</option>
-                    <option value="7">7月</option>
-                    <option value="8">8月</option>
-                    <option value="9">9月</option>
-                    <option value="10">10月</option>
-                    <option value="11">11月</option>
-                    <option value="12">12月</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>出生日期（阳历）</label>
-                <input type="number" id="day" min="1" max="31" value="1" required>
-            </div>
-            <div class="form-group">
-                <label>出生时间</label>
-                <select id="hour" required>
-                    <option value="0">00:00-00:59 (子时)</option>
-                    <option value="1">01:00-01:59 (丑时)</option>
-                    <option value="2">02:00-02:59 (丑时)</option>
-                    <option value="3">03:00-03:59 (寅时)</option>
-                    <option value="4">04:00-04:59 (寅时)</option>
-                    <option value="5">05:00-05:59 (卯时)</option>
-                    <option value="6">06:00-06:59 (卯时)</option>
-                    <option value="7">07:00-07:59 (辰时)</option>
-                    <option value="8">08:00-08:59 (辰时)</option>
-                    <option value="9">09:00-09:59 (巳时)</option>
-                    <option value="10">10:00-10:59 (巳时)</option>
-                    <option value="11">11:00-11:59 (午时)</option>
-                    <option value="12">12:00-12:59 (午时)</option>
-                    <option value="13">13:00-13:59 (未时)</option>
-                    <option value="14">14:00-14:59 (未时)</option>
-                    <option value="15">15:00-15:59 (申时)</option>
-                    <option value="16">16:00-16:59 (申时)</option>
-                    <option value="17">17:00-17:59 (酉时)</option>
-                    <option value="18">18:00-18:59 (酉时)</option>
-                    <option value="19">19:00-19:59 (戌时)</option>
-                    <option value="20">20:00-20:59 (戌时)</option>
-                    <option value="21">21:00-21:59 (亥时)</option>
-                    <option value="22">22:00-22:59 (亥时)</option>
-                    <option value="23">23:00-23:59 (子时-次日)</option>
-                </select>
-                <small>⚠️ 注意：23:00-23:59算作次日子时</small>
+            
+            <!-- 手动模式 -->
+            <div id="manualMode" style="display: none;">
+                <div class="form-group">
+                    <label>出生年份</label>
+                    <input type="number" id="manualYear" min="1900" max="2100" value="2000">
+                </div>
+                <div class="form-group">
+                    <label>节气月</label>
+                    <select id="solarMonth">
+                        <option value="1">正月（立春后）</option>
+                        <option value="2">二月（惊蛰后）</option>
+                        <option value="3">三月（清明后）</option>
+                        <option value="4">四月（立夏后）</option>
+                        <option value="5">五月（芒种后）</option>
+                        <option value="6">六月（小暑后）</option>
+                        <option value="7">七月（立秋后）</option>
+                        <option value="8">八月（白露后）</option>
+                        <option value="9">九月（寒露后）</option>
+                        <option value="10">十月（立冬后）</option>
+                        <option value="11">十一月（大雪后）</option>
+                        <option value="12">十二月（小寒后）</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>农历日期</label>
+                    <select id="lunarDay">
+                        <option value="1">初一</option>
+                        <option value="2">初二</option>
+                        <option value="3">初三</option>
+                        <option value="4">初四</option>
+                        <option value="5">初五</option>
+                        <option value="6">初六</option>
+                        <option value="7">初七</option>
+                        <option value="8">初八</option>
+                        <option value="9">初九</option>
+                        <option value="10">初十</option>
+                        <option value="11">十一</option>
+                        <option value="12">十二</option>
+                        <option value="13">十三</option>
+                        <option value="14">十四</option>
+                        <option value="15">十五</option>
+                        <option value="16">十六</option>
+                        <option value="17">十七</option>
+                        <option value="18">十八</option>
+                        <option value="19">十九</option>
+                        <option value="20">二十</option>
+                        <option value="21">廿一</option>
+                        <option value="22">廿二</option>
+                        <option value="23">廿三</option>
+                        <option value="24">廿四</option>
+                        <option value="25">廿五</option>
+                        <option value="26">廿六</option>
+                        <option value="27">廿七</option>
+                        <option value="28">廿八</option>
+                        <option value="29">廿九</option>
+                        <option value="30">三十</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>时辰</label>
+                    <select id="shiChen">
+                        <option value="0">子时（23:00-01:00）</option>
+                        <option value="1">丑时（01:00-03:00）</option>
+                        <option value="3">寅时（03:00-05:00）</option>
+                        <option value="5">卯时（05:00-07:00）</option>
+                        <option value="7">辰时（07:00-09:00）</option>
+                        <option value="9">巳时（09:00-11:00）</option>
+                        <option value="11">午时（11:00-13:00）</option>
+                        <option value="13">未时（13:00-15:00）</option>
+                        <option value="15">申时（15:00-17:00）</option>
+                        <option value="17">酉时（17:00-19:00）</option>
+                        <option value="19">戌时（19:00-21:00）</option>
+                        <option value="21">亥时（21:00-23:00）</option>
+                    </select>
+                </div>
             </div>
             <button type="submit">✦ 测算命理 ✦</button>
         </form>
