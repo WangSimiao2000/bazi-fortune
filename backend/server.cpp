@@ -176,13 +176,27 @@ string handleRequest(const string& request) {
         // 自动计算节气月
         int solarMonth = getSolarMonth(year, month, day);
         
-        double weight = getWeight(year, solarMonth, day, hour);
+        // 获取各部分骨重
+        double yearW = yearWeight[0].count(year) ? yearWeight[0][year] : 0;
+        double monthW = monthWeight.count(solarMonth) ? monthWeight[solarMonth] : 0;
+        double dayW = dayWeight.count(day) ? dayWeight[day] : 0;
+        double hourW = hourWeight.count(hour) ? hourWeight[hour] : 0;
+        
+        double weight = yearW + monthW + dayW + hourW;
         string poem = getPoem(weight, gender);
         
         ostringstream json;
         json << "{\"weight\":" << weight 
              << ",\"poem\":\"" << poem << "\""
-             << ",\"solarMonth\":" << solarMonth << "}";
+             << ",\"solarMonth\":" << solarMonth
+             << ",\"yearWeight\":" << yearW
+             << ",\"monthWeight\":" << monthW
+             << ",\"dayWeight\":" << dayW
+             << ",\"hourWeight\":" << hourW
+             << ",\"inputYear\":" << year
+             << ",\"inputMonth\":" << month
+             << ",\"inputDay\":" << day
+             << ",\"inputHour\":" << hour << "}";
         
         ostringstream response;
         response << "HTTP/1.1 200 OK\r\n"
