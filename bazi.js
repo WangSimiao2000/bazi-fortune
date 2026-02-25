@@ -242,10 +242,16 @@ document.getElementById('baziForm').addEventListener('submit', (e) => {
         </div>
     `;
     
+    // 更新两个显示区域
     document.getElementById('processDisplay').innerHTML = processHTML;
     document.getElementById('weightDisplay').textContent = `骨重：${weight.toFixed(1)} 两`;
     document.getElementById('poemDisplay').textContent = poem;
     document.getElementById('result').classList.add('show');
+    
+    document.getElementById('processDisplaySide').innerHTML = processHTML;
+    document.getElementById('weightDisplaySide').textContent = `骨重：${weight.toFixed(1)} 两`;
+    document.getElementById('poemDisplaySide').textContent = poem;
+    document.getElementById('resultContainer').classList.add('show');
 });
 
 // 模式切换
