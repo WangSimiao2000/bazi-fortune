@@ -209,16 +209,7 @@ button:hover {
 
 @media (min-width: 1024px) {
     .result {
-        margin-top: 0;
-        padding: 0;
-        background: none;
-        border: none;
-        box-shadow: none;
-        display: block !important;
-    }
-    
-    .result.show {
-        animation: none;
+        display: none !important;
     }
 }
 
