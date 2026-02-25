@@ -101,6 +101,13 @@
 <body>
     <div class="container">
         <h1>📿 称骨算命</h1>
+        <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; line-height: 1.6;">
+            <strong>⚠️ 重要提示：</strong><br>
+            传统称骨算命使用<strong>节气月</strong>（干支月），而非农历月。<br>
+            节气月以立春、惊蛰、清明等"节"为分界。<br>
+            例如：2000年11月6日（农历10月11）在立冬前，应算<strong>九月</strong>。<br>
+            <a href="solar-terms.html" target="_blank" style="color: #667eea;">📖 查看详细节气对照表</a>
+        </div>
         <form id="baziForm">
             <div class="form-group">
                 <label>性别</label>
@@ -114,21 +121,24 @@
                 <input type="number" id="year" min="1924" max="2020" value="1990" required>
             </div>
             <div class="form-group">
-                <label>出生月份</label>
+                <label>出生月份（请根据节气确定）</label>
                 <select id="month" required>
-                    <option value="1">正月</option>
-                    <option value="2">二月</option>
-                    <option value="3">三月</option>
-                    <option value="4">四月</option>
-                    <option value="5">五月</option>
-                    <option value="6">六月</option>
-                    <option value="7">七月</option>
-                    <option value="8">八月</option>
-                    <option value="9">九月</option>
-                    <option value="10">十月</option>
-                    <option value="11">冬月</option>
-                    <option value="12">腊月</option>
+                    <option value="1">正月（立春后）</option>
+                    <option value="2">二月（惊蛰后）</option>
+                    <option value="3">三月（清明后）</option>
+                    <option value="4">四月（立夏后）</option>
+                    <option value="5">五月（芒种后）</option>
+                    <option value="6">六月（小暑后）</option>
+                    <option value="7">七月（立秋后）</option>
+                    <option value="8">八月（白露后）</option>
+                    <option value="9">九月（寒露后）</option>
+                    <option value="10">十月（立冬后）</option>
+                    <option value="11">冬月（大雪后）</option>
+                    <option value="12">腊月（小寒后）</option>
                 </select>
+                <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">
+                    💡 提示：如出生在节气前，应选上一个月
+                </small>
             </div>
             <div class="form-group">
                 <label>出生日期</label>
