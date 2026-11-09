@@ -7,8 +7,8 @@ function bjTime(ms) {
     const d = new Date(ms + 8 * 3600e3);
     return `${d.getUTCFullYear()}年${d.getUTCMonth() + 1}月${d.getUTCDate()}日 ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
 }
-const item = (label, html, style = '') => `<div class="process-item"${style ? ` style="${style}"` : ''}><strong>${label}：</strong>${html}</div>`;
-const WARN = 'color: #ffd700;';
+const item = (label, html, warn = false) => `<div class="process-item${warn ? ' warn' : ''}"><strong>${label}：</strong>${html}</div>`;
+const WARN = true;
 
 function show(processHTML, weight, gender) {
     const poems = gender === 'male' ? malePoems : femalePoems;
