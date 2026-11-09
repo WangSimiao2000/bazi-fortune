@@ -306,3 +306,13 @@ small {
         display: none !important;
     }
 }
+
+/* 计算口径切换：放在表单里，比顶部的模式切换紧凑一些 */
+.basis-switch {
+    justify-content: flex-start;
+    margin-bottom: 8px;
+}
+
+.basis-switch label {
+    margin-bottom: 0;
+}
