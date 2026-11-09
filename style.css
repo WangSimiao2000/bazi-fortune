@@ -315,3 +315,54 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     background: var(--accent-soft);
     word-break: break-word;
 }
+
+/* 农历日期：6 列 x 5 行的格子，像日历一样直接点，不用下拉（30 项的下拉在矮窗口里会超出屏幕） */
+.field-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.day-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.day-grid label {
+    position: relative;
+    margin: 0;
+    font-weight: 500;
+}
+
+.day-grid input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.day-grid span {
+    display: block;
+    padding: 7px 0;
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.day-grid span:hover { border-color: var(--muted); color: var(--text); }
+
+.day-grid input:checked + span {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    font-weight: 600;
+}
+
+.day-grid input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 1px; }

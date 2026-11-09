@@ -40,7 +40,7 @@ document.getElementById('baziForm').addEventListener('submit', (e) => {
         const r = {
             year: parseInt(document.getElementById('manualYear').value),
             month: parseInt(document.getElementById('solarMonth').value),
-            day: parseInt(document.getElementById('lunarDay').value),
+            day: parseInt(document.querySelector('input[name="lunarDay"]:checked').value),
             shichen: C.shichenOf(parseInt(document.getElementById('shiChen').value)),
         };
         const w = C.weigh(r);
